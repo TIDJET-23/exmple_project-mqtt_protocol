@@ -8,11 +8,16 @@ const App = () => {
   const [mqttUrl, setMqttUrl] = useState('localhost:8080');
   const [connected, setConnected] = useState(false);
 
+  const handleConnect = () => {
+    setConnected(true);
+    connectToMqtt();
+  };
+
   const connectToMqtt = () => {
+    setConnected(false)
     const client = mqtt.connect('ws://'+mqttUrl);
 
     client.on('connect', () => {
-      setConnected(true);
       console.log('Connected to MQTT server');
       client.subscribe('value/#', (err) => {
         if (!err) {
@@ -42,7 +47,7 @@ const App = () => {
 
   return (
     <>
-      <div className='title' ><b>connect To Mqtt</b></div>
+      <div className='title'><b>Connect To Mqtt</b></div>
       <Grid spacing={2} className='container-app'>
         <Grid item xs={12}>
           <TextField
@@ -51,7 +56,7 @@ const App = () => {
             onChange={(e) => setMqttUrl(e.target.value)}
             fullWidth
           />
-          <Button onClick={() => setConnected(true)} variant="contained" color="primary" style={{ marginTop: '1rem' }}>
+          <Button onClick={handleConnect} variant="contained" color="primary" style={{ marginTop: '1rem' }}>
             Connect
           </Button>
         </Grid>
